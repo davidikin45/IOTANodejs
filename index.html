@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+    <head>
+        <title>BadBrakes Car Rental</title>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+        <script>
+            var paymentAddress;
+            $(function (){
+            var socket = io();            
+            socket.on('newaddress', function(address){
+                paymentAddress=address
+                $('#mainImage').attr('src','pay.png')
+                $('#mainText').html('Please pay 1 IOTA to the following address:<br/>'+ address)
+            })
+            socket.on('unlocked', function(unlockedAddress){
+                if(unlockedAddress===paymentAddress)
+                {
+                $('#mainImage').attr('src','unlocked.png')
+                $('#mainText').html('The payment is received and the car is unlocked.')
+                }
+            })
+        })
+        </script>
+    </head>
+    <body>
+        <center>
+            <img src="BadBrakesLogo.png" width="600px" />
+            <p><img id="mainImage" width="100px" src="waiting.png"> </p>
+            <p id="mainText">Please wait while we are generating a payment address for you.</p>
+        </center>
+    </body>
+</html>
